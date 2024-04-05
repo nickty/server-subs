@@ -23,16 +23,13 @@ mongoose
 
 //middlewares
 app.use(express.json({ limit: '5mb' }))
-app.use(
-  cors({
-    origin: [process.env.CLIENT_URL],
-  })
-)
+app.use(moran('dev'))
+app.use(cors())
 
 // routes
-app.get('/api/register', (req, res) => {
-  res.send('response from node server')
-})
+readdirSync('./routes').map((file) =>
+  app.use('/api', require(`./routes/${file}`))
+)
 
 //listen
 const PORT = process.env.PORT || 8000
